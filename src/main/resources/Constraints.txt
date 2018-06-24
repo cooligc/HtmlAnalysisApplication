@@ -1,0 +1,2 @@
+1. HTML version decimal number not implemented. e.g if HTML version is 4.01 it will print 4
+2. UI alignment pending

@@ -1,0 +1,47 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Statistics Page</title>
+
+</head>
+<div>
+    <div th:insert="common/general.html :: static"></div>
+    <header th:insert="common/general.html :: header"></header>
+
+    <center> HTML Analysis Report </center>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="text-center">
+                    Timetable
+                </h2>
+            </div>
+            <div id="no-more-tables">
+                <table class="col-sm-12 table-bordered table-striped table-condensed cf">
+                    <thead class="cf">
+                    <tr>
+                        <th>Scanned URL</th>
+                        <th>Page Title</th>
+                        <th>HTML Version Used</th>
+                        <th>Does it contain any login page ? </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td th:text="${url}">07:45 |1| 08:35</td>
+                        <td th:text="${response.getPageTitle()}">Lesson</td>
+                        <td th:text="${response.getHtmlVersion()}">Lesson</td>
+                        <td th:text="${response.getLoginPage() ? 'Yes' : 'No'}">Lesson</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <footer th:insert="common/general.html :: footer"></footer>
+
+</div>
+</body>
+</html>

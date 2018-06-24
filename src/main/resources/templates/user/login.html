@@ -1,0 +1,41 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Please Login</title>
+
+</head>
+<div>
+    <div th:insert="common/general.html :: static"></div>
+    <div class="container">
+        <form class="form-signin" th:action="@{/login}" method="post">
+            <div th:if="${param.error}" class="alert alert-danger">
+                Invalid username and password.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success">
+                You have been logged out.
+            </div>
+            <center><h2 class="form-signin-heading">Login</h2></center>
+            <label for="username" class="sr-only">Enter Username</label>
+            <div class="col-xs-4">
+                <input type="text" id="username" name="username" class="form-control col-xs-4" placeholder="Enter username" required autofocus>
+            </div>
+            <label for="password" class="sr-only">Enter Password</label>
+
+            <div class="col-xs-4">
+                <input type="password" id="password" name="password" class="form-control col-xs-4" placeholder="Enter Password" required>
+            </div>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+            <div class="col-xs-2">
+                <button class="btn btn-lg btn-primary btn-block col-xs-2" type="submit">Sign in</button>
+            </div>
+
+            <div class="col-xs-2">
+                <button class="btn btn-lg btn-primary btn-block col-xs-2" type="reset">Reset</button>
+            </div>
+        </form>
+
+    </div> <!-- /container -->
+
+</div>
+</body>
+</html>
