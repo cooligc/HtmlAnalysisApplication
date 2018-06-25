@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -143,5 +145,46 @@ public class HtmlParsingTestCase {
         	}
         });
     }
+
+    @Test
+    public void testReacableURL(){
+
+        try {
+            Method method = htmlParsing.getClass().getDeclaredMethod("getModifiedURL", Link.class,String.class);
+
+            Link link = new Link();
+            link.setHref("/open-source/stories/freakboy3742");
+            link.setType("internal");
+            link.setAbsoluteURL("/about");
+            method.setAccessible(true);
+            String url = (String)method.invoke(htmlParsing, link,"https://github.com");
+            Assert.assertEquals("https://github.com/open-source/stories/freakboy3742",url);
+
+            link = new Link();
+            link.setHref("#abc");
+            link.setType("internal");
+            link.setAbsoluteURL("#abc");
+            method.setAccessible(true);
+            url = (String)method.invoke(htmlParsing, link,"https://github.com");
+            Assert.assertEquals("https://github.com#abc",url);
+
+            Link link2 = new Link();
+            link.setHref("//www.youtube.com");
+            link.setType("external");
+            method.setAccessible(true);
+            url = (String)method.invoke(htmlParsing, link,"https://github.com");
+            Assert.assertEquals("//www.youtube.com",url);
+
+
+
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

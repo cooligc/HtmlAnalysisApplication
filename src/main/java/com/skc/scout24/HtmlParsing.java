@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.DocumentType;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class HtmlParsing {
+
+    private static final Logger LOGGER = org.apache.logging.log4j.LogManager.getLogger();
 
     public static final String HTTPS = "https";
     public static final String PROTOCOL_HTTPS = "https://";
@@ -53,9 +56,22 @@ public class HtmlParsing {
     }
 
     public Document getHtmlDocument(String url) throws IOException{
+
+        //Case //www.youtube.com
     	if(url.startsWith("//")) {
     		url = url.replaceFirst("//", PROTOCOL_HTTP);
     	}
+
+    	//Case index.html
+        if(!url.trim().contains("/")){
+    	    url = "/"+url;
+        }
+
+    	//Case /about
+    	if(url.trim().startsWith("/")){
+    	    url = getProtocol(getUrl())+getDomain(getUrl())+"/"+url;
+        }
+
         return Jsoup.connect(url).get();
     }
 
@@ -137,27 +153,31 @@ public class HtmlParsing {
     //TODO Need to be optimized
     private String getModifiedURL(Link link,String url) {
     	String modifiedURL=link.getHref();
-    	String uuid = UUID.randomUUID().toString();
     	if(checkStaticURL(modifiedURL)) {
     		link.setIsAccessable(Boolean.FALSE);
-    		link.setErrorString("Inline Java Script Code cannot be accessable");
+    		link.setErrorString("Inline static (e.g javascript: , mailto: etc) URL cannot be accessable");
     		return modifiedURL;
     	}
-    	
+
+    	//Case - //www.youtube.com
+    	if(modifiedURL.trim().startsWith("//")){
+    	    return modifiedURL;
+        }
+
     	//For Home page. just appaending # 
     	if(modifiedURL.length() == 0) {
-    		link.setHref("#");
+    		link.setHref("/");
     	}
-    	if(modifiedURL.equalsIgnoreCase("/advanced_search?hl=en-IN&fg=1"))
-    	
-    	System.out.println("1 - "+uuid+"\t"+modifiedURL);
+
     	if(link.getType().equalsIgnoreCase("internal") && !link.getHref().startsWith("http") && 
     			// Few URL starts with //www.somedomain.com . This condition will remove such. This is for / relative URL
-    			((link.getHref().startsWith("/",1) && !link.getHref().startsWith("/",2))
+    			(link.getHref().startsWith("/")
                   || link.getHref().startsWith("#"))) {
     		modifiedURL = getProtocol(url)+getDomain(url)+link.getHref();
     	}
-    	System.out.println("2 - "+uuid+"\t"+modifiedURL);
+        if(LOGGER.isDebugEnabled()){
+            LOGGER.debug("Modified URL --> "+modifiedURL+" \t Before URL --->"+link.getHref() + "\t "+link.getType());
+        }
 		return modifiedURL;
 	}
 
@@ -202,7 +222,10 @@ public class HtmlParsing {
     public void varifyLinks(List<Link> links) {
         links.parallelStream().forEach(link -> {
             try {
-            	System.out.println("links ---> "+link.getAbsoluteURL());
+                if(LOGGER.isDebugEnabled()){
+                    LOGGER.debug("links ---> "+link.getAbsoluteURL());
+                }
+
             	//If there is an inline javascript we should ignore to access it
             	if(link.getIsAccessable() == null ) {
                     getHtmlDocument(link.getAbsoluteURL());

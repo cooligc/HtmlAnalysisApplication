@@ -7,6 +7,10 @@
     <div th:insert="common/general.html :: static"></div>
     <header th:insert="common/general.html :: header"></header>
 
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}">
+        Invalid username and password.
+    </div>
+
     <form th:action="@{/home/data}">
         <center><h2 class="form-signin-heading">HTML URL Analysis</h2></center>
         <label for="url" class="sr-only">Enter your URL</label>
