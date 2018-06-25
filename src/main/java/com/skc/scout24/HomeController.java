@@ -1,5 +1,8 @@
 package com.skc.scout24;
 
+import java.io.IOException;
+import java.util.List;
+
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,10 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/home")
@@ -37,7 +36,7 @@ public class HomeController {
                 .withHtmlVersion(htmlParsing.getHtmlVersion(document))
                 .withPageTitle(htmlParsing.getPageTitle(document))
                 .withHeadingDetails(headingList,htmlParsing.getHeadingCount(headingList))
-                .withLinksDetails(allLinks,htmlParsing.varifyLinks(allLinks))
+                .withLinksDetails(allLinks)
                 .isLoginPage(htmlParsing.detectLoginPage(document))
                 .build();
         model.addAttribute("response",responseModel);

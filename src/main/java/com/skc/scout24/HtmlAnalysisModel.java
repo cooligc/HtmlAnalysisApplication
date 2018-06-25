@@ -5,12 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 public class HtmlAnalysisModel implements Serializable{
-    private String htmlVersion;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String htmlVersion;
     private String pageTitle;
     private List<Heading> allHeadings;
     private Map<String,Long> headingCountMap;
     private List<Link> allLinks;
-    private Map<String,String> metaDataLink;
     private Boolean isLoginPage;
 
     public List<Heading> getAllHeadings() {
@@ -51,14 +54,6 @@ public class HtmlAnalysisModel implements Serializable{
 
     public void setAllLinks(List<Link> allLinks) {
         this.allLinks = allLinks;
-    }
-
-    public Map<String, String> getMetaDataLink() {
-        return metaDataLink;
-    }
-
-    public void setMetaDataLink(Map<String, String> metaDataLink) {
-        this.metaDataLink = metaDataLink;
     }
 
     public Boolean getLoginPage() {

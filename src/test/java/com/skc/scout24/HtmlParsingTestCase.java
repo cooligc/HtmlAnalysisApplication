@@ -60,7 +60,7 @@ public class HtmlParsingTestCase {
         try {
             List<Heading> headingList = htmlParsing.getHeadings(htmlParsing.getHtmlDocument());
             headingList.parallelStream().forEach(heading -> {
-                Assert.assertTrue(heading.getType().contains("h"));
+                Assert.assertTrue(heading.getType().startsWith("h"));
             });
         } catch (IOException e) {
             e.printStackTrace();
@@ -130,15 +130,17 @@ public class HtmlParsingTestCase {
     @Test
     public void testVarifyLinks(){
         List<Link> links = new ArrayList<>();
-        links.add(new Link("https://github.com","internal"));
-        links.add(new Link("https://testareddcsj.com","external"));
-        Map<String,String> linksMap =  htmlParsing.varifyLinks(links);
+        links.add(new Link("https://github.com","internal","https://github.com"));
+        links.add(new Link("https://testareddcsj.com","external","https://testareddcsj.com"));
+        htmlParsing.varifyLinks(links);
         links.parallelStream().forEach(link -> {
-            if(link.getType().equalsIgnoreCase("external")){
-                Assert.assertTrue(linksMap.get(link.getHref()).contains("non-accessable"));
-            }else {
-                Assert.assertTrue(linksMap.get(link.getHref()).contains("accessable"));
-            }
+        	if(link.getType().equalsIgnoreCase("external")) {
+        		Assert.assertEquals(link.getHref(), "https://testareddcsj.com");
+        		Assert.assertTrue(!link.getIsAccessable());
+        	}else {
+        		Assert.assertEquals(link.getHref(), "https://github.com");
+        		Assert.assertTrue(link.getIsAccessable());
+        	}
         });
     }
 

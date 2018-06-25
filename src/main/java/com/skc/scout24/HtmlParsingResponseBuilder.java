@@ -33,9 +33,8 @@ public class HtmlParsingResponseBuilder {
         return this;
     }
 
-    public HtmlParsingResponseBuilder withLinksDetails(List<Link>  allLinks, Map<String,String> linksMetaData){
+    public HtmlParsingResponseBuilder withLinksDetails(List<Link>  allLinks){
         HtmlParsingResponseBuilder.htmlAnalysisModel.setAllLinks(allLinks);
-        HtmlParsingResponseBuilder.htmlAnalysisModel.setMetaDataLink(linksMetaData);
         return this;
     }
 

@@ -3,15 +3,24 @@ package com.skc.scout24;
 import java.io.Serializable;
 
 public class Link implements Serializable{
-    private String href;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private String href;
     private String type;
+    private String absoluteURL;
+    private Boolean isAccessable;
+    private String errorString;
 
     public Link() {
     }
 
-    public Link(String href, String type) {
+    public Link(String href, String type,String absoluteURL) {
         this.href = href;
         this.type = type;
+        this.absoluteURL = absoluteURL;
     }
 
     public String getHref() {
@@ -29,4 +38,28 @@ public class Link implements Serializable{
     public void setType(String type) {
         this.type = type;
     }
+
+	public String getAbsoluteURL() {
+		return absoluteURL;
+	}
+
+	public void setAbsoluteURL(String absoluteURL) {
+		this.absoluteURL = absoluteURL;
+	}
+
+	public Boolean getIsAccessable() {
+		return isAccessable;
+	}
+
+	public void setIsAccessable(Boolean isAccessable) {
+		this.isAccessable = isAccessable;
+	}
+
+	public String getErrorString() {
+		return errorString;
+	}
+
+	public void setErrorString(String errorString) {
+		this.errorString = errorString;
+	}
 }

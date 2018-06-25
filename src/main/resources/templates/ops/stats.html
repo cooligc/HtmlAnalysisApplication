@@ -1,46 +1,94 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Statistics Page</title>
+<title>Statistics Page</title>
 
 </head>
 <div>
-    <div th:insert="common/general.html :: static"></div>
-    <header th:insert="common/general.html :: header"></header>
+	<div th:insert="common/general.html :: static"></div>
+	<header th:insert="common/general.html :: header"></header>
 
-    <center> HTML Analysis Report </center>
+	<div class="col-md-12">
+		<h2 class="text-center">HTML Analysis Report</h2>
+	</div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h2 class="text-center">
-                    Timetable
-                </h2>
-            </div>
-            <div id="no-more-tables">
-                <table class="col-sm-12 table-bordered table-striped table-condensed cf">
-                    <thead class="cf">
-                    <tr>
-                        <th>Scanned URL</th>
-                        <th>Page Title</th>
-                        <th>HTML Version Used</th>
-                        <th>Does it contain any login page ? </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td th:text="${url}">07:45 |1| 08:35</td>
-                        <td th:text="${response.getPageTitle()}">Lesson</td>
-                        <td th:text="${response.getHtmlVersion()}">Lesson</td>
-                        <td th:text="${response.getLoginPage() ? 'Yes' : 'No'}">Lesson</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+	<div class="container">
+		<div class="row">
+			<div id="no-more-tables">
+				<table
+					class="col-sm-12 table-bordered table-striped table-condensed cf">
+					<thead class="cf">
+						<tr>
+							<th>Scanned URL</th>
+							<th>Page Title</th>
+							<th>HTML Version Used</th>
+							<th>Does it contain any login page ?</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td th:text="${url}">07:45 |1| 08:35</td>
+							<td th:text="${response.getPageTitle()}">Lesson</td>
+							<td th:text="${response.getHtmlVersion()}">Lesson</td>
+							<td th:text="${response.getLoginPage() ? 'Yes' : 'No'}">Lesson</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="row">
+			<div id="no-more-tables">
+				<div class="col-md-12">
+					<h2 class="text-center">Heading Statistics</h2>
+				</div>
+				<table
+					class="col-sm-12 table-bordered table-striped table-condensed cf">
+					<thead class="cf">
+						<tr>
+							<th>Heading Label</th>
+							<th>Count</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="heading: ${response.headingCountMap}">
+							<td th:text="${heading.key}">Lesson</td>
+							<td th:text="${heading.value}">Lesson</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div id="no-more-tables">
+				<div class="col-md-12">
+					<h2 class="text-center">Links Analysis</h2>
+				</div>
+				<table
+					class="col-sm-12 table-bordered table-striped table-condensed cf">
+					<thead class="cf">
+						<tr>
+							<th>Link URL</th>
+							<th>Type</th>
+							<th>Reachable</th>
+							<th>Error</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="link: ${response.allLinks}">
+							<td th:text="${link.href}">Lesson</td>
+							<td th:text="${link.type}">Lesson</td>
+							<td th:text="${link.isAccessable}">Lesson</td>
+							<td th:text="${link.errorString == null ? 'N/A' : link.errorString}">Lesson</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 
 
-    <footer th:insert="common/general.html :: footer"></footer>
+	<footer th:insert="common/general.html :: footer"></footer>
 
 </div>
 </body>
