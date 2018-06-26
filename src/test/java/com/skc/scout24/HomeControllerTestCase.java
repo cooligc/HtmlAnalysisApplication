@@ -40,9 +40,9 @@ public class HomeControllerTestCase {
     @Test
     public void testHtmlAnalysis() throws Exception{
         this.mockMvc.perform(MockMvcRequestBuilders.get("/home/data")
-                            .param("url","http://github.com"))
+                            .param("url","https://github.com"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.model().attribute("url","http://github.com"));
+                .andExpect(MockMvcResultMatchers.model().attribute("url","https://github.com"));
     }
 
 }

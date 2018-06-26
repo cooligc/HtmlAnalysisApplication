@@ -18,7 +18,7 @@ This application will take an url starting with ```http://``` or ```https://``` 
 * Get into the HtmlAnalysisApplication directory using ```cd``` command
 * Build the application . Execute below command
   ```$mvn clean install ```
-* Execute the below command and visit ```http://localhost:8080``` from web browser</br>  ```$java -jar Scout24App.jar```
+* Execute the below command and visit ```http://localhost:8080``` from web browser</br>  ```$java -jar target/Scout24App.jar```
 
 
 ### NOTE: 
