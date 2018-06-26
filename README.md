@@ -11,13 +11,13 @@ This application will take an url starting with ```http://``` or ```https://``` 
 * Spring-boot
 * Thymeleaf
 * Bootstrap (CSS)
+* Maven 3 or above
 
 ### How to build and run the Application ? 
 
-* Clone the git repository
 * Get into the HtmlAnalysisApplication directory using ```cd``` command
 * Build the application . Execute below command
-  ```$./mvnw clean install ```
+  ```$mvn clean install ```
 * Execute the below command and visit ```http://localhost:8080``` from web browser</br>  ```$java -jar Scout24App.jar```
 
 
