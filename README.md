@@ -19,7 +19,7 @@ This application will take an url starting with http:// or https:// and will ana
 * Build the application . Execute below command
   ```$./mvnw clean install ```
 * Execute the below command and visit ```http://localhost:8080``` from web browser
-       ```$java -jar Scout24App.jar``````$java -jar Scout24App.jar```
+       ```$java -jar Scout24App.jar```
 
 
 NOTE: 
