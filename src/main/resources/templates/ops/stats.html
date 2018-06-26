@@ -71,6 +71,7 @@
 							<th>Link URL</th>
 							<th>Type</th>
 							<th>Reachable</th>
+							<th>Http Status Code </th>
 							<th>Error</th>
 						</tr>
 					</thead>
@@ -79,6 +80,7 @@
 							<td th:text="${link.href}">Lesson</td>
 							<td th:text="${link.type}">Lesson</td>
 							<td th:text="${link.isAccessable}">Lesson</td>
+							<td th:text="${link.statusCode}">Lesson</td>
 							<td th:text="${link.errorString == null ? 'N/A' : link.errorString}">Lesson</td>
 						</tr>
 					</tbody>

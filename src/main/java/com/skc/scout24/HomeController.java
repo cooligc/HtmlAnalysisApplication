@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.Logger;
 import org.jsoup.nodes.Document;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +25,6 @@ public class HomeController {
 
     private static final Logger LOGGER = org.apache.logging.log4j.LogManager.getLogger();
 
-    @Autowired
-    HtmlParsing htmlParsing;
     
     /***
      * This will land on the Landing Page of application
@@ -51,21 +48,20 @@ public class HomeController {
      */
     @GetMapping("/data")
     public String htmlAnalysis(@RequestParam(value = "url",required = true)  String url, Model model) throws IOException{
-        htmlParsing.setUrl(url);
         if(LOGGER.isDebugEnabled()){
             LOGGER.debug("Entered URL by user --> "+ url);
         }
 
-        Document document = htmlParsing.getHtmlDocument();
-        List<Heading> headingList = htmlParsing.getHeadings(document);
-        List<Link> allLinks = htmlParsing.getAllLinks(document);
+        Document document = HtmlParsing.getHtmlDocument(url);
+        List<Heading> headingList = HtmlParsing.getHeadings(document);
+        List<Link> allLinks = HtmlParsing.getAllLinks(document,url);
 
         HtmlAnalysisModel responseModel = HtmlParsingResponseBuilder.init(new HtmlAnalysisModel())
-                .withHtmlVersion(htmlParsing.getHtmlVersion(document))
-                .withPageTitle(htmlParsing.getPageTitle(document))
-                .withHeadingDetails(headingList,htmlParsing.getHeadingCount(headingList))
+                .withHtmlVersion(HtmlParsing.getHtmlVersion(document))
+                .withPageTitle(HtmlParsing.getPageTitle(document))
+                .withHeadingDetails(headingList,HtmlParsing.getHeadingCount(headingList))
                 .withLinksDetails(allLinks)
-                .isLoginPage(htmlParsing.detectLoginPage(document))
+                .isLoginPage(HtmlParsing.detectLoginPage(document))
                 .build();
         model.addAttribute("response",responseModel);
         model.addAttribute("url",url);

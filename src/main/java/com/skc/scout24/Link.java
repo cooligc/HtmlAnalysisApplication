@@ -18,14 +18,17 @@ public class Link implements Serializable{
     private String absoluteURL;
     private Boolean isAccessable;
     private String errorString;
+    private Integer statusCode;
 
     public Link() {
+    	this.isAccessable = Boolean.TRUE;
     }
 
     public Link(String href, String type,String absoluteURL) {
         this.href = href;
         this.type = type;
         this.absoluteURL = absoluteURL;
+        this.isAccessable = Boolean.TRUE;
     }
 
     public String getHref() {
@@ -67,4 +70,13 @@ public class Link implements Serializable{
 	public void setErrorString(String errorString) {
 		this.errorString = errorString;
 	}
+
+	public Integer getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(Integer statusCode) {
+		this.statusCode = statusCode;
+	}
+	
 }
