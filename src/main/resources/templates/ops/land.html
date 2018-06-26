@@ -1,7 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Landing Page</title>
-
 </head>
 <div>
     <div th:insert="common/general.html :: static"></div>
@@ -11,7 +10,7 @@
         Invalid username and password.
     </div>
 
-    <form th:action="@{/home/data}">
+    <form id="" th:action="@{/home/data}">
         <center><h2 class="form-signin-heading">HTML URL Analysis</h2></center>
         <label for="url" class="sr-only">Enter your URL</label>
         <div class="col-xs-4">
@@ -19,13 +18,13 @@
         </div>
 
         <div class="col-xs-2">
-            <button class="btn btn-lg btn-primary btn-block col-xs-2" type="submit">Start Analysis</button>
+            <button class="btn btn-lg btn-primary btn-block col-xs-2" type="submit" onclick="loadingAjax()">Start Analysis</button>
         </div>
 
     </form>
 
     <footer th:insert="common/general.html :: footer"></footer>
-
+	
 </div>
 </body>
 </html>

@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -20,6 +19,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.springframework.stereotype.Component;
 
+/***
+ * This is a kind of utility class for HTML where we will calculate the required statistics
+ * @author sitakanta
+ *
+ */
 @Component
 public class HtmlParsing {
 
@@ -30,7 +34,7 @@ public class HtmlParsing {
     public static final String PROTOCOL_HTTP = "http://";
     private static final List<String> STATIC_URLS = Arrays.asList("javascript","mailto");
     private String url;
-
+    
     private Document document;
 
     public Document getDocument() {
@@ -40,7 +44,7 @@ public class HtmlParsing {
     public void setDocument(Document document) {
         this.document = document;
     }
-
+    
     public String getUrl() {
         //URL has to be set
         assert url != null;
@@ -51,10 +55,17 @@ public class HtmlParsing {
         this.url = url;
     }
 
+    
     public Document getHtmlDocument() throws IOException{
         return Jsoup.connect(getUrl()).get();
     }
-
+    
+    /***
+     * This method is having only capability to hit to the web page
+     * @param url
+     * @return
+     * @throws IOException
+     */
     public Document getHtmlDocument(String url) throws IOException{
 
         //Case //www.youtube.com
@@ -74,7 +85,13 @@ public class HtmlParsing {
 
         return Jsoup.connect(url).get();
     }
-
+    
+    /**
+     * This method will retrieve the HTML version from the {@link Document}
+     * @param document
+     * @return
+     * @throws IOException
+     */
     public String getHtmlVersion(Document document) throws IOException {
         document = validateDocument(document);
         List<Node> nodes = document.childNodes();
@@ -87,7 +104,12 @@ public class HtmlParsing {
         }
         return document;
     }
-
+    
+    /***
+     * 
+     * @param nodes
+     * @return
+     */
     private String getHtmlVersion(List<Node> nodes) {
         Optional<Node> _node = nodes.parallelStream().filter(node -> node instanceof DocumentType).findFirst();
         DocumentType documentType = (DocumentType) _node.get();
@@ -99,12 +121,24 @@ public class HtmlParsing {
         }
         return matcher.group(1).substring(0,1);
     }
-
+    
+    /**
+     * This method is having responsibility to retrieve HTML title from {@link Document}
+     * @param document
+     * @return
+     * @throws IOException
+     */
     public String getPageTitle(Document document) throws IOException{
         document = validateDocument(document);
         return document.title();
     }
-
+    
+    /**
+     * This method will get all the heading tags and will scan it from {@link Document} and retrieve the {@link List} of {@link Heading}
+     * @param document
+     * @return
+     * @throws IOException
+     */
     public List<Heading> getHeadings(final Document document) throws IOException{
         assert document != null;
         List<Heading> headingList = new ArrayList<>();
@@ -120,7 +154,12 @@ public class HtmlParsing {
         });
         return headingList;
     }
-
+    
+    /**
+     * This method is responsible to get the HTML heading count and return into the map
+     * @param headings
+     * @return
+     */
     public Map<String,Long> getHeadingCount(List<Heading> headings){
         Map<String,Long> headingCount = new HashMap<>();
         Arrays.asList("h1","h2","h3","h4","h5").parallelStream().forEach(tag -> {
@@ -130,6 +169,11 @@ public class HtmlParsing {
         return headingCount;
     }
 
+    /**
+     * This method will retrieve all the links on a {@link Document}.
+     * @param htmlDocument
+     * @return
+     */
     public List<Link> getAllLinks(Document htmlDocument) {
         List<Link> links = new ArrayList<>();
         List<Element> elements = htmlDocument.getElementsByTag("a");
@@ -150,6 +194,12 @@ public class HtmlParsing {
         return links;
     }
     
+    /**
+     * 
+     * @param link
+     * @param url
+     * @return
+     */
     //TODO Need to be optimized
     private String getModifiedURL(Link link,String url) {
     	String modifiedURL=link.getHref();
@@ -180,7 +230,12 @@ public class HtmlParsing {
         }
 		return modifiedURL;
 	}
-
+    
+    /**
+     * 
+     * @param modifiedURL
+     * @return
+     */
 	private boolean checkStaticURL(String modifiedURL) {
 		//TODO Need to revisit
 		for (String shtURL : STATIC_URLS) {
@@ -191,10 +246,20 @@ public class HtmlParsing {
 		return Boolean.FALSE;
 	}
 
+	/**
+	 * 
+	 * @param url
+	 * @return
+	 */
 	private String getProtocol(String url) {
         return url.startsWith(HTTPS) ? PROTOCOL_HTTPS : PROTOCOL_HTTP;
     }
-
+	
+	/**
+	 * 
+	 * @param url
+	 * @return
+	 */
     private String getDomain(String url) {
 
         //replace https or http if there
@@ -203,7 +268,12 @@ public class HtmlParsing {
         url = url.contains("/") ? url.substring(0,url.indexOf("/")) : url.contains("?") ? url.substring(0,url.indexOf("?")) : url;
         return url;
     }
-
+    
+    /**
+     * This method responsibility to detect Login form on {@link Document}
+     * @param htmlDocument
+     * @return
+     */
     public boolean detectLoginPage(Document htmlDocument) {
         List<Element> forms = htmlDocument.getElementsByTag("form");
 
@@ -212,13 +282,22 @@ public class HtmlParsing {
 
         return null != isLogin;
     }
-
+    
+    /**
+     * 
+     * @param form
+     * @return
+     */
     private boolean isLoginPage(Element form) {
         List<Element> inputField = form.getElementsByTag("input");
         List<Element> passwordField = inputField.parallelStream().filter(element -> element.attr("type").equalsIgnoreCase("password")).collect(Collectors.toList());
         return passwordField.size() == 1 ; 
     }
-
+    
+    /**
+     * This method will validate wheather the links are reachable or not
+     * @param links
+     */
     public void varifyLinks(List<Link> links) {
         links.parallelStream().forEach(link -> {
             try {

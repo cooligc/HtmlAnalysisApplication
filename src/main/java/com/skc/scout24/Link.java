@@ -2,6 +2,11 @@ package com.skc.scout24;
 
 import java.io.Serializable;
 
+/***
+ * Model class for html Link
+ * @author sitakanta
+ *
+ */
 public class Link implements Serializable{
     /**
 	 * 

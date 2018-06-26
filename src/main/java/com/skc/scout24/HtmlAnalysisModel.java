@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+/***
+ * This is the Model class which will take the HTML Statistics data to the UI Layer
+ * @author sitakanta
+ *
+ */
 public class HtmlAnalysisModel implements Serializable{
     /**
 	 * 

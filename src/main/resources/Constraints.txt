@@ -1,2 +1,7 @@
 1. HTML version decimal number not implemented. e.g if HTML version is 4.01 it will print 4
 2. UI alignment pending
+3. A loader can be implemented once we entered the URL
+4. In memory credentials for now (user/user)
+5. Entered URL should starts with http:// or https://
+6. If https:// call , then the certificate should have a valid common name. eg https://hpe.com this will be an error as 
+   its SSL ceritifcate it register with www.hpe.com not with hpe.com 

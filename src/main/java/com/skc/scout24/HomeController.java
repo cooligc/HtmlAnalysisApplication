@@ -13,6 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/***
+ * This is the Main Controller which will handle all business operations
+ * 
+ * @author sitakanta
+ *
+ */
 @Controller
 @RequestMapping("/home")
 public class HomeController {
@@ -22,7 +28,11 @@ public class HomeController {
 
     @Autowired
     HtmlParsing htmlParsing;
-
+    
+    /***
+     * This will land on the Landing Page of application
+     * @return
+     */
     @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST})
     public String landPage(){
         if(LOGGER.isInfoEnabled()){
@@ -31,6 +41,14 @@ public class HomeController {
         return "ops/land";
     }
 
+    /***
+     * This method will get the URL as a part of {@link RequestParam} and will process it further to get HTML specific statistics
+     * 
+     * @param url
+     * @param model
+     * @return
+     * @throws IOException
+     */
     @GetMapping("/data")
     public String htmlAnalysis(@RequestParam(value = "url",required = true)  String url, Model model) throws IOException{
         htmlParsing.setUrl(url);
@@ -55,7 +73,7 @@ public class HomeController {
             LOGGER.debug("Analysis is done .");
         }
 
-            return "ops/stats";
+        return "ops/stats";
     }
 
 }

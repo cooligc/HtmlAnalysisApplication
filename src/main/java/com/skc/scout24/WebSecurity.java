@@ -7,15 +7,25 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * Web security configuration
+ * @author sitakanta
+ *
+ */
 
 @Configurable
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter{
-
+	
+	/***
+	 * This is not recomended to use on ahead to develope instance rather then we can use {@link BCryptPasswordEncoder} and related.
+	 * 
+	 * @return
+	 */
     @Bean
     public PasswordEncoder passwordEncoder(){
         //TODO We can make this secure. For now , I will access plain text based credentials
@@ -26,7 +36,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
     public AuthenticationSuccessHandler authenticationSuccessHandler(){
         return new AuthenticationSuccessHandler();
     }
-
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().passwordEncoder(passwordEncoder())
